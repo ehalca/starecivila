@@ -1,0 +1,10 @@
+{
+    "elements": {},
+    "attributes": {
+        "uib-dropdown-menu": {
+            "context": "ul"
+        },
+        "uib-dropdown": {},
+        "file-input": {}
+    }
+}

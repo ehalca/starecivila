@@ -1,2 +1,10 @@
-<p>This is the partial for view 1.</p>
-<p>Connection : {{isConnected}}</p>
+<table class="table table-striped table-hover" >
+    <thead>
+        <tr><td ng-repeat="value in headers">{{value}}</td></tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="reservation in reservationInfo">
+            <td ng-repeat="value in reservation">{{value}}</td>
+        </tr>
+    </tbody>
+</table>

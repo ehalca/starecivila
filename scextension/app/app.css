@@ -27,3 +27,9 @@ div[ng-view] {
     width:600px;
     height:800px;
 }
+
+.nav>li>div[uib-dropdown] {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
