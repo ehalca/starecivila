@@ -38,6 +38,17 @@ class LawyerMapping extends ReservationMapping {
     }
 }
 
+class TestMapping extends ReservationMapping{
+    constructor() {
+        super({
+            name: {selector: '#input1', displayName: 'Name'},
+            lastName: {selector: '#input2', displayName: 'Last Name'},
+            email: {selector: '#input3', displayName: 'Email'},
+            color: {selector: '#docs', displayName: 'Color'},
+        });
+    }
+}
+
 class Reservation {
     constructor(reservationMapping, data) {
         this.reservationMapping = reservationMapping;
@@ -55,6 +66,7 @@ class Reservation {
         var mapping = ReservationMapping.fromMessage(msg.reservationMapping);
         var result = new Reservation(mapping, []);
         result.data = msg.data;
+        result.result = msg.result;
         return result;
     }
 }

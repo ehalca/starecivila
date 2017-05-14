@@ -8,7 +8,7 @@ angular.module('myApp.view1', ['ngRoute'])
                 });
             }])
 
-        .controller('MainController', ['eventPageService', 'dataService', 'configService', '$scope', function (eventPageService, dataService, configService, $scope) {
+        .controller('MainController', ['eventPageService', 'dataService', 'configService', '$scope', '$rootScope', function (eventPageService, dataService, configService, $scope, $rootScope) {
                 var data;
                 var mapping;
                 var mode;
@@ -32,6 +32,8 @@ angular.module('myApp.view1', ['ngRoute'])
                             data = ReservationData.fromMessage(r.data);
                             mapping = ReservationMapping.fromMessage(r.data.mapping);
                             mode = r.mode;
+                            configService.setMode(mode, false);
+                            $rootScope.$broadcast('modeChanged', mode);
                             console.log('init calling render');
                             render();
                         }, function () {
@@ -50,13 +52,23 @@ angular.module('myApp.view1', ['ngRoute'])
                     $scope.headers = [];
                     $scope.reservationInfo = [];
                     if (data && data.mapping) {
+                        let headers = [];
                         for (var key in data.mapping.getDisplayMapping()) {
-                            $scope.headers.push(data.mapping.getDisplayMapping()[key]);
+                            headers.push(data.mapping.getDisplayMapping()[key]);
                         }
+                        headers.push('Rezultat');
+                        $scope.headers = headers;
                         $scope.reservationInfo = data.reservations.map((r) => {
-                            return Object.keys(data.mapping.getDisplayMapping()).map((k)=>{
+                             let values = Object.keys(data.mapping.getDisplayMapping()).map((k)=>{
                                 return r.data[k];
                             });
+                            if (r.result){
+                                values.push(r.result.confirmation.text);
+                            }else{
+                                values.push('Asteapta');
+                            }
+                            
+                            return values;
                         });
 
                     }

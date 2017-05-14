@@ -1,6 +1,6 @@
+ var background = background || {};
 (function () {
 
-    var background = background || {};
     background.mode = undefined;
     background.mapping = undefined;
     background.data = undefined;
@@ -41,13 +41,10 @@
     }
 
     function reservationDone(data) {
-        background.lastReservation = undefined;
-        let r = background.data.reduce((s, e) => {
-            return e.id === data.reservation.id ? e : null
-        }, null);
-        if (r !== null) {
-            r.result = data.resultData;
+        if (background.lastReservation){
+            background.lastReservation.value.result = data.result;
         }
+        background.lastReservation = undefined;
         pushNextReservation();
     }
 
@@ -58,7 +55,7 @@
 
     function propagateInjectMessage(msg) {
         console.log("Message pushed:" + JSON.stringify(msg));
-        background.extensionPort.postMessage(msg);
+     //   background.extensionPort.postMessage(msg);
     }
 
     function pushNextReservation() {
@@ -99,6 +96,8 @@
                 }
             } else if (msg.event.name === "reservationDone") {
                 reservationDone(msg.event.data);
+                propagateInjectMessage(msg);
+            }else if (msg.event.name === "reservationSubmitted"){
                 propagateInjectMessage(msg);
             }
         };
